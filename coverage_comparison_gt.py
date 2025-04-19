@@ -32,7 +32,7 @@ app.layout = html.Div([
             {"label": "GSM", "value": 'GSM'}
         ],
         multi=False,
-        value='LTE',
+        value='NR',
         style={'width': "40%"}
     ),
 
