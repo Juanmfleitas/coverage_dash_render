@@ -14,23 +14,7 @@ import warnings
 
 app = Dash(__name__)
 
-server = app.server
-
-# ------------------------------------------------------------------------------
-# Leer parquet procesado
-columns_needed = ['quadkey', 'geometry', 'technology','comparison']
-pivot_table = pd.read_parquet("processed_data.parquet", columns=columns_needed)
-#pivot_table = pd.read_parquet("processed_data.parquet")
-
-# Convertir geometría WKT a objeto geométrico
-pivot_table['geometry'] = pivot_table['geometry'].apply(loads)
-
-# Crear GeoDataFrame
-gdf_csv = gpd.GeoDataFrame(pivot_table, geometry="geometry")
-
-if gdf_csv.crs is None:
-    gdf_csv.set_crs(epsg=4326, inplace=True)
-
+#server = app.server
 
 # ------------------------------------------------------------------------------
 # App layout
@@ -68,9 +52,26 @@ warnings.filterwarnings("ignore", category=FutureWarning)
      Output(component_id='my_tech_map', component_property='figure')],
 #     Output(component_id='bar_plot', component_property='figure')],
     [Input(component_id='slct_tech', component_property='value')]
+
     )
 
 def update_graph(option_slctd):
+
+# ------------------------------------------------------------------------------
+# Leer parquet procesado
+    columns_needed = ['quadkey', 'geometry', 'technology','comparison']
+    pivot_table = pd.read_parquet("processed_data.parquet", columns=columns_needed)
+    #pivot_table = pd.read_parquet("processed_data.parquet")
+
+    # Convertir geometría WKT a objeto geométrico
+    pivot_table['geometry'] = pivot_table['geometry'].apply(loads)
+
+    # Crear GeoDataFrame
+    gdf_csv = gpd.GeoDataFrame(pivot_table, geometry="geometry")
+
+    if gdf_csv.crs is None:
+        gdf_csv.set_crs(epsg=4326, inplace=True)
+
     print(option_slctd)
 
     container = f"The selected technology was: {option_slctd}"
@@ -120,4 +121,4 @@ def update_graph(option_slctd):
 
 # ------------------------------------------------------------------------------
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=True, host="0.0.0.0", port=10000)
