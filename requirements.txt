@@ -1,0 +1,8 @@
+dash==2.16.1
+pandas==2.2.1
+geopandas==0.14.3
+shapely==2.0.3
+plotly==5.20.0
+numpy==1.26.4
+mercantile==1.2.1
+scikit-learn==1.4.2
