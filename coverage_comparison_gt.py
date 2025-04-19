@@ -14,7 +14,7 @@ import warnings
 
 app = Dash(__name__)
 
-#server = app.server
+server = app.server
 
 # ------------------------------------------------------------------------------
 # App layout
