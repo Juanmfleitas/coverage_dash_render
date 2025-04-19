@@ -58,6 +58,8 @@ def update_graph(option_slctd):
         print("🔹 Tecnología seleccionada:", option_slctd)
 
         columns_needed = ['quadkey', 'geometry', 'technology','comparison']
+        import os
+        print("📁 Archivos disponibles en el contenedor:", os.listdir("."))
         pivot_table = pd.read_parquet("processed_data.parquet", columns=columns_needed)
         print("✅ Archivo parquet cargado. Filas:", len(pivot_table))
 
