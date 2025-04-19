@@ -18,7 +18,9 @@ server = app.server
 
 # ------------------------------------------------------------------------------
 # Leer parquet procesado
-pivot_table = pd.read_parquet("processed_data.parquet")
+columns_needed = ['quadkey', 'geometry', 'technology','comparison']
+pivot_table = pd.read_parquet("processed_data.parquet", columns=columns_needed)
+#pivot_table = pd.read_parquet("processed_data.parquet")
 
 # Convertir geometría WKT a objeto geométrico
 pivot_table['geometry'] = pivot_table['geometry'].apply(loads)
