@@ -78,8 +78,10 @@ app.layout = html.Div([
     ], style={'display': 'flex', 'justify-content': 'center'}),
     
     html.Br(),
+    dcc.Graph(id='my_tech_map', figure={}),
 
-    dcc.Graph(id='my_tech_map', figure={})
+    html.Br(),
+    dcc.Graph(id='comparison_bar_chart', figure={})  # 🆕 Nuevo gráfico
 
 ])
 
@@ -90,13 +92,11 @@ warnings.filterwarnings("ignore", category=FutureWarning)
 @app.callback(
     [Output(component_id='output_container', component_property='children'),
      Output(component_id='output_container1', component_property='children'),
-     Output(component_id='my_tech_map', component_property='figure')],
-#     Output(component_id='bar_plot', component_property='figure')],
+     Output(component_id='my_tech_map', component_property='figure'),
+     Output(component_id='comparison_bar_chart', component_property='figure')],  # Nuevo output
     [Input(component_id='slct_tech', component_property='value'),
      Input(component_id='slct_adm1', component_property='value')]
-
     )
-
 
 def update_graph(option_slctd, option_adm1):
 
@@ -138,7 +138,7 @@ def update_graph(option_slctd, option_adm1):
     centroid = gdf_projected.geometry.centroid.to_crs(epsg=4326)
 
     # Crear figura
-    fig = px.choropleth_mapbox(
+    fig_map = px.choropleth_mapbox(
         dff,
         geojson=geojson,
         locations=dff.index,
@@ -158,13 +158,48 @@ def update_graph(option_slctd, option_adm1):
         }
     )
 
-    fig.update_layout(
+    fig_map.update_layout(
         width=1700,
-        height=900,
+        height=700,
         margin={"r": 0, "t": 0, "l": 0, "b": 0}
     )
 
-    return container, container1, fig
+   # Gráfico de una sola barra apilada (100%)
+    bar_data = dff['comparison'].value_counts(normalize=True).mul(100).round(2)
+
+    bar_fig = go.Figure()
+    categories = ['Ambos Tigo + Claro', 'Solo Tigo', 'Solo Claro']
+    colors = {
+        "Ambos Tigo + Claro": "gray",
+        "Solo Tigo": "blue",
+        "Solo Claro": "red"
+    }
+
+    x0 = 0
+    for category in categories:
+        value = bar_data.get(category, 0)
+        bar_fig.add_trace(go.Bar(
+            x=[value],
+            y=["Cobertura"],
+            name=category,
+            orientation='h',
+            marker=dict(color=colors[category]),
+            text=f"{value}%",
+            textposition='inside'
+        ))
+        x0 += value
+
+    bar_fig.update_layout(
+        barmode='stack',
+        title='Distribución porcentual por tipo de cobertura (total = 100%)',
+    #    xaxis=dict(range=[0, 100], title='Porcentaje (%)'),
+        yaxis=dict(showticklabels=False),
+        height=200,
+        margin=dict(t=40, b=20, l=20, r=20),
+        showlegend=True
+    )
+
+    return container, container1, fig_map, bar_fig
 
 # ------------------------------------------------------------------------------
 if __name__ == '__main__':
