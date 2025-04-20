@@ -32,7 +32,7 @@ app.layout = html.Div([
             {"label": "GSM", "value": 'GSM'}
         ],
         multi=False,
-        value='NR',
+        value='LTE',
         style={'width': "40%"}
     ),
 
@@ -46,7 +46,6 @@ app.layout = html.Div([
 # ------------------------------------------------------------------------------
 # Connect the Plotly graphs with Dash Components
 warnings.filterwarnings("ignore", category=FutureWarning)
-
 
 @app.callback(
     [Output(component_id='output_container', component_property='children'),
@@ -119,7 +118,6 @@ def update_graph(option_slctd):
     )
 
     return container, fig
-
 
 # ------------------------------------------------------------------------------
 if __name__ == '__main__':
