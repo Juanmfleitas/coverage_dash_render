@@ -21,7 +21,7 @@ server = app.server
 # App layout
 app.layout = html.Div([
 
-    html.H1("Tigo and Claro Mobile Coverage Comparison - Guatemala. Period: December 2024", style={'text-align': 'center'}),
+    html.H1("Tigo and Claro 5G Mobile Coverage Comparison - Guatemala. Period: December 2024", style={'text-align': 'center'}),
 
     html.Div([
         dcc.Dropdown(
