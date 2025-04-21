@@ -159,9 +159,17 @@ def update_graph(option_slctd, option_adm1):
     )
 
     fig_map.update_layout(
-        width=1700,
-        height=700,
-        margin={"r": 0, "t": 0, "l": 0, "b": 0}
+    width=1700,
+    height=700,
+    margin={"r": 0, "t": 0, "l": 0, "b": 0},
+    legend=dict(
+        x=0.90,          # horizontal position (0 = left, 1 = right)
+        y=0.98,         # vertical position (0 = bottom, 1 = top)
+        bgcolor='white',  # Fondo blanco sólido
+        bordercolor='black',
+        borderwidth=1,
+        font=dict(size=12)
+    )
     )
 
    # Gráfico de una sola barra apilada (100%)
@@ -196,7 +204,7 @@ def update_graph(option_slctd, option_adm1):
         yaxis=dict(showticklabels=False),
         height=200,
         margin=dict(t=40, b=20, l=20, r=20),
-        showlegend=True
+        showlegend=False
     )
 
     return container, container1, fig_map, bar_fig
