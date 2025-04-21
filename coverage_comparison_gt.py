@@ -172,7 +172,7 @@ def update_graph(option_slctd, option_adm1):
     )
     )
 
-   # Gráfico de una sola barra apilada (100%)
+    # Gráfico de una sola barra apilada (100%)
     bar_data = dff['comparison'].value_counts(normalize=True).mul(100).round(2)
 
     bar_fig = go.Figure()
@@ -183,7 +183,6 @@ def update_graph(option_slctd, option_adm1):
         "Solo Claro": "red"
     }
 
-    x0 = 0
     for category in categories:
         value = bar_data.get(category, 0)
         bar_fig.add_trace(go.Bar(
@@ -193,14 +192,13 @@ def update_graph(option_slctd, option_adm1):
             orientation='h',
             marker=dict(color=colors[category]),
             text=f"{value}%",
-            textposition='inside'
+            textposition='inside',
+            textfont=dict(size=19, color='white')  # <-- Tamaño y color del texto
         ))
-        x0 += value
 
     bar_fig.update_layout(
         barmode='stack',
-        title='Percentage distribution by mobile operator',
-    #    xaxis=dict(range=[0, 100], title='Porcentaje (%)'),
+        title='Distribución porcentual por tipo de cobertura (total = 100%)',
         yaxis=dict(showticklabels=False),
         height=200,
         margin=dict(t=40, b=20, l=20, r=20),
