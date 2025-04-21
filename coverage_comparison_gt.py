@@ -198,7 +198,7 @@ def update_graph(option_slctd, option_adm1):
 
     bar_fig.update_layout(
         barmode='stack',
-        title='Distribución porcentual por tipo de cobertura (total = 100%)',
+        title='Percentage distribution by available mobile operator',
         yaxis=dict(showticklabels=False),
         height=200,
         margin=dict(t=40, b=20, l=20, r=20),
