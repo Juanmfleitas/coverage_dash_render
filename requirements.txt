@@ -6,3 +6,4 @@ numpy==1.26.4
 plotly==5.20.0
 mercantile==1.2.1
 pyarrow
+gunicorn
