@@ -117,6 +117,7 @@ def update_graph(option_adm1, map_style):
 # Leer parquet procesado
     columns_needed = ['quadkey', 'geometry', 'technology','comparison','ADM1_ES']
     pivot_table = pd.read_parquet("processed_data.parquet", columns=columns_needed)
+    pivot_table = pivot_table[pivot_table["ADM1_ES"] == option_adm1]  # 👈 primero filtras
  
 # Convertir geometría load_WKT a objeto geométrico
     pivot_table['geometry'] = pivot_table['geometry'].apply(load_wkb)
