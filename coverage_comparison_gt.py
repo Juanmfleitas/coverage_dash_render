@@ -10,21 +10,35 @@ from dash import Dash, dcc, html, Input, Output  # pip install dash (version 2.0
 import mercantile
 import json
 import warnings
+import os
+
+px.set_mapbox_access_token("pk.eyJ1IjoianVhbm1mbGVpdGFzIiwiYSI6ImNrYnZoMTM4ejAzOGcydGxiMjJmeTYycm8ifQ.BcvHwPI_UZZfpfop746GDQ")
 
 # ------------------------------------------------------------------------------
-
 app = Dash(__name__)
-
 server = app.server
 
 # ------------------------------------------------------------------------------
 # App layout
 app.layout = html.Div([
 
-    html.H1("Tigo and Claro 4G Mobile Coverage Comparison - Guatemala. Period: Q1 2025", style={'text-align': 'center'}),
- 
-    html.Div([
+    # Incluir Google Fonts en el layout
+    html.Link(
+        href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap",
+        rel="stylesheet"
+    ),
 
+    html.H1(
+        "Tigo and Claro 4G Mobile Coverage Comparison - Guatemala. Period: Q1 2025",
+        style={
+            'fontFamily': 'Quicksand, sans-serif',
+            'fontWeight': 'bold',  # 👈 negritas
+            'color': '#0033A0',  # Azul corporativo Tigo
+            'marginLeft': '20px'
+        }
+    ),
+
+    html.Div([
         dcc.Dropdown(
             id="slct_adm1",
             options=[
@@ -53,24 +67,35 @@ app.layout = html.Div([
             ],
             multi=False,
             value='Guatemala',
-            #style={'width': "40%"}
-            style={'width': "40%"}
+            style={'width': "40%", 'fontFamily': 'Quicksand, sans-serif', 'fontSize': '16px', 'marginLeft': '10px'}
+        ),
+        dcc.Dropdown(
+            id="slct_map_style",
+            options=[
+                {"label": "Satelital", "value": "satellite-streets"},
+                {"label": "Light", "value": "carto-positron"}
+            ],
+            value="satellite-streets",
+            style={'width': "40%", 'fontFamily': 'Quicksand, sans-serif', 'fontSize': '16px', 'marginLeft': '10px'}
         )
     ], style={'display': 'flex' }), #'justify-content': 'center'
 
-
     html.Div([
         html.Div(id='output_container1', children=[], style={'width': "40%"}),
-    
+        html.Div(id='output_container2', children=[], style={'width': "40%"}),       
     ], style={'display': 'flex'}),  #, 'justify-content': 'center'
-    
-    html.Br(),
-    dcc.Graph(id='my_tech_map', figure={}),
 
-    html.Br(),
-    dcc.Graph(id='comparison_bar_chart', figure={})  # 🆕 Nuevo gráfico
+    html.Div([
+        html.Br(),
+        dcc.Graph(id='my_tech_map', figure={}, style={'height': '700px'}),
+        html.Br(),
+        dcc.Graph(id='comparison_bar_chart', figure={}, style={'height': '200px'})
+    ], style={
+        'maxWidth': '100%',
+        'margin': '0 auto',
+})
 
-])
+], style={'backgroundColor': '#f1f2f3', 'padding': '5px'})
 
 # ------------------------------------------------------------------------------
 # Connect the Plotly graphs with Dash Components
@@ -78,19 +103,21 @@ warnings.filterwarnings("ignore", category=FutureWarning)
 
 @app.callback(
     [Output(component_id='output_container1', component_property='children'),
+     Output(component_id='output_container2', component_property='children'),
      Output(component_id='my_tech_map', component_property='figure'),
-     Output(component_id='comparison_bar_chart', component_property='figure')],
-    [Input(component_id='slct_adm1', component_property='value')]
+     Output(component_id='comparison_bar_chart', component_property='figure')],  # Nuevo output
+    [Input(component_id='slct_adm1', component_property='value'),
+     Input(component_id='slct_map_style', component_property='value')]
 
     )
 
-def update_graph(option_adm1): #option_slctd, 
+def update_graph(option_adm1, map_style):
 
 # ------------------------------------------------------------------------------
 # Leer parquet procesado
     columns_needed = ['quadkey', 'geometry', 'technology','comparison','ADM1_ES']
     pivot_table = pd.read_parquet("processed_data.parquet", columns=columns_needed)
-
+ 
 # Convertir geometría load_WKT a objeto geométrico
     pivot_table['geometry'] = pivot_table['geometry'].apply(load_wkb)
 
@@ -101,10 +128,33 @@ def update_graph(option_adm1): #option_slctd,
         gdf_csv.set_crs(epsg=4326, inplace=True)
 
     print(option_adm1)
+    print(map_style)
 
-    container1 = f"The selected region was: {option_adm1}"
+#    container = f"The selected adm1 was: {option_adm1}"
+    container1 = html.Div(
+    f"The selected region was: {option_adm1}",
+    style={
+        'fontFamily': 'Quicksand, sans-serif',
+        'color': '#0033A0',  # Azul corporativo Tigo
+ #       'fontWeight': 'bold',
+        'fontSize': '18px',
+        'marginLeft': '20px'  # 👈 Alineación izquierda ajustada
+    }
+    )
 
-# Filtrar GeoDataFrame por ADM1
+#    container = f"The selected background was: {map_style}"
+    container2 = html.Div(
+    f"The selected background was: {map_style}",
+    style={
+        'fontFamily': 'Quicksand, sans-serif',
+        'color': '#0033A0',  # Azul corporativo Tigo
+ #       'fontWeight': 'bold',
+        'fontSize': '18px',
+        'marginLeft': '20px'  # 👈 Alineación izquierda ajustada
+    }
+    )
+
+# Filtrar GeoDataFrame por tecnología
     dff = gdf_csv[gdf_csv["ADM1_ES"] == option_adm1]
 
     if dff.empty:
@@ -124,7 +174,7 @@ def update_graph(option_adm1): #option_slctd,
         geojson=geojson,
         locations=dff.index,
         color="comparison",
-        mapbox_style="carto-positron",
+        mapbox_style=map_style,
         center={
             "lat": centroid.y.mean(),
             "lon": centroid.x.mean()
@@ -144,15 +194,15 @@ def update_graph(option_adm1): #option_slctd,
     height=700,
     margin={"r": 0, "t": 0, "l": 0, "b": 0},
     legend=dict(
-        x=0.90,          # horizontal position (0 = left, 1 = right)
-        y=0.98,         # vertical position (0 = bottom, 1 = top)
+        x=0.01,          # horizontal position (0 = left, 1 = right)
+        y=0.02,         # vertical position (0 = bottom, 1 = top)
         bgcolor='white',  # Fondo blanco sólido
+#        bgcolor='rgba(255,255,255,0.6)',  # semi-transparent background
         bordercolor='black',
         borderwidth=1,
         font=dict(size=12)
     )
     )
-
 
 # Gráfico de una sola barra apilada (100%)
     bar_data = dff['comparison'].value_counts(normalize=True).mul(100).round(2)
@@ -180,14 +230,25 @@ def update_graph(option_adm1): #option_slctd,
 
     bar_fig.update_layout(
         barmode='stack',
-        title='Percentage distribution by available mobile operator',
+        #title='Distribución porcentual por operador móvil disponible',
+        title=dict(
+        text='Percentage distribution by available mobile operator',
+        x=0.01,  # 👈 más cerca del borde izquierdo
+        font=dict(
+            family='Quicksand, sans-serif',
+            size=20,
+            color='#0033A0'  # Azul corporativo Tigo
+        )
+        ),
         yaxis=dict(showticklabels=False),
         height=200,
         margin=dict(t=40, b=20, l=20, r=20),
-        showlegend=False
+        showlegend=False,
+        paper_bgcolor='#f1f2f3',  # Fondo del canvas (todo el gráfico)
+        plot_bgcolor='#f1f2f3'    # Fondo del área del gráfico en sí
     )
 
-    return container1, fig_map, bar_fig #container, 
+    return container1, container2, fig_map, bar_fig
 
 # ------------------------------------------------------------------------------
 if __name__ == '__main__':
