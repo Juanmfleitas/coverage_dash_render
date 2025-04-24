@@ -143,7 +143,7 @@ def update_graph(option_adm1, map_style):
  #       'fontWeight': 'bold',
         'width': "100%",
         'fontSize': '18px',
-        'marginLeft': '5px',  # 👈 Alineación izquierda ajustada
+        'marginLeft': '3px',  # 👈 Alineación izquierda ajustada
         'marginRight': '10px',  # 👈 espacio hacia container2
     }
     )
@@ -156,8 +156,8 @@ def update_graph(option_adm1, map_style):
         'color': '#0033A0',  # Azul corporativo Tigo
  #       'fontWeight': 'bold',
         'fontSize': '18px',
-        'width': "100%",
-        'marginLeft': '4px'  # 👈 Alineación izquierda ajustada
+        'width': "150%",
+        'marginLeft': '65px'  # 👈 Alineación izquierda ajustada
     }
     )
 
