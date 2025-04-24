@@ -79,14 +79,14 @@ app.layout = html.Div([
                 {"label": "Outdoors", "value": "outdoors"}
             ],
             value="satellite-streets",
-            style={'width': "70%"}
+            style={'width': "70%"} 
         )
     ], style={'width': "40%", 'fontFamily': 'Quicksand, sans-serif', 'fontSize': '16px', 'display': 'flex', 'gap': '10px', 'marginLeft': '10px'}),
 
     html.Div([
         html.Div(id='output_container1', children=[], style={'width': "40%"}),
         html.Div(id='output_container2', children=[], style={'width': "40%"}),       
-    ], style={'width': "40%", 'fontFamily': 'Quicksand, sans-serif', 'fontSize': '16px', 'display': 'flex', 'gap': '10px', 'marginLeft': '10px'}),
+    ], style={'width': "40%", 'fontFamily': 'Quicksand, sans-serif', 'fontSize': '16px', 'display': 'flex', 'gap': '10px', 'marginLeft': '10px'}), 
 
     html.Div([
         html.Br(),
