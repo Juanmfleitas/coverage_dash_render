@@ -67,23 +67,26 @@ app.layout = html.Div([
             ],
             multi=False,
             value='Guatemala',
-            style={'width': "40%", 'fontFamily': 'Quicksand, sans-serif', 'fontSize': '16px', 'marginLeft': '10px'}
+            style={'width': "70%"}
         ),
         dcc.Dropdown(
             id="slct_map_style",
             options=[
                 {"label": "Satelital", "value": "satellite-streets"},
-                {"label": "Light", "value": "carto-positron"}
+                {"label": "Light", "value": "carto-positron"},
+                {"label": "Nocturno", "value": "carto-darkmatter"},  # Nuevo estilo nocturno
+                {"label": "OpenStreetMap", "value": "open-street-map"},
+                {"label": "Outdoors", "value": "outdoors"}
             ],
             value="satellite-streets",
-            style={'width': "40%", 'fontFamily': 'Quicksand, sans-serif', 'fontSize': '16px', 'marginLeft': '10px'}
+            style={'width': "70%"}
         )
-    ], style={'display': 'flex' }), #'justify-content': 'center'
+    ], style={'width': "40%", 'fontFamily': 'Quicksand, sans-serif', 'fontSize': '16px', 'display': 'flex', 'gap': '10px', 'marginLeft': '10px'}),
 
     html.Div([
         html.Div(id='output_container1', children=[], style={'width': "40%"}),
         html.Div(id='output_container2', children=[], style={'width': "40%"}),       
-    ], style={'display': 'flex'}),  #, 'justify-content': 'center'
+    ], style={'width': "40%", 'fontFamily': 'Quicksand, sans-serif', 'fontSize': '16px', 'display': 'flex', 'gap': '10px', 'marginLeft': '10px'}),
 
     html.Div([
         html.Br(),
@@ -133,25 +136,28 @@ def update_graph(option_adm1, map_style):
 
 #    container = f"The selected adm1 was: {option_adm1}"
     container1 = html.Div(
-    f"The selected region was: {option_adm1}",
+    f"Selected region: {option_adm1}",
     style={
         'fontFamily': 'Quicksand, sans-serif',
         'color': '#0033A0',  # Azul corporativo Tigo
  #       'fontWeight': 'bold',
+        'width': "100%",
         'fontSize': '18px',
-        'marginLeft': '20px'  # 👈 Alineación izquierda ajustada
+        'marginLeft': '5px',  # 👈 Alineación izquierda ajustada
+        'marginRight': '10px',  # 👈 espacio hacia container2
     }
     )
 
 #    container = f"The selected background was: {map_style}"
     container2 = html.Div(
-    f"The selected background was: {map_style}",
+    f"Selected background: {map_style}",
     style={
         'fontFamily': 'Quicksand, sans-serif',
         'color': '#0033A0',  # Azul corporativo Tigo
  #       'fontWeight': 'bold',
         'fontSize': '18px',
-        'marginLeft': '20px'  # 👈 Alineación izquierda ajustada
+        'width': "100%",
+        'marginLeft': '4px'  # 👈 Alineación izquierda ajustada
     }
     )
 
