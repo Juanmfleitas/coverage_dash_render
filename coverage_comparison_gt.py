@@ -157,7 +157,7 @@ def update_graph(option_adm1, map_style):
  #       'fontWeight': 'bold',
         'fontSize': '18px',
         'width': "150%",
-        'marginLeft': '63px'  # 👈 Alineación izquierda ajustada
+        'marginLeft': '65px'  # 👈 Alineación izquierda ajustada
     }
     )
 
