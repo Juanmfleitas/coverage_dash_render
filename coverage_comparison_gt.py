@@ -81,7 +81,7 @@ app.layout = html.Div([
             value="satellite-streets",
             style={'width': "70%"} 
         )
-    ], style={'width': "40%", 'fontFamily': 'Quicksand, sans-serif', 'fontSize': '16px', 'display': 'flex', 'gap': '10px', 'marginLeft': '10px'}),
+    ], style={'width': "40%", 'fontFamily': 'Quicksand, sans-serif', 'fontSize': '16px', 'display': 'flex', 'gap': '10px', 'marginLeft': '15px'}),
 
     html.Div([
         html.Div(id='output_container1', children=[], style={'width': "40%"}),
@@ -90,12 +90,13 @@ app.layout = html.Div([
 
     html.Div([
         html.Br(),
-        dcc.Graph(id='my_tech_map', figure={}, style={'height': '700px'}),
+        dcc.Graph(id='my_tech_map', figure={}, style={'height': '700px'}), #, 'marginLeft': '15px'
         html.Br(),
         dcc.Graph(id='comparison_bar_chart', figure={}, style={'height': '200px'})
     ], style={
-        'maxWidth': '100%',
-        'margin': '0 auto',
+        'width': '98%',               # Mismo ancho para ambas figuras
+        'marginLeft': 'auto',         # Centra automáticamente horizontalmente
+        'marginRight': 'auto',
 })
 
 ], style={'backgroundColor': '#f1f2f3', 'padding': '5px'})
@@ -143,7 +144,7 @@ def update_graph(option_adm1, map_style):
  #       'fontWeight': 'bold',
         'width': "100%",
         'fontSize': '18px',
-        'marginLeft': '3px',  # 👈 Alineación izquierda ajustada
+        'marginLeft': '7px',  # 👈 Alineación izquierda ajustada
         'marginRight': '10px',  # 👈 espacio hacia container2
     }
     )
@@ -157,7 +158,7 @@ def update_graph(option_adm1, map_style):
  #       'fontWeight': 'bold',
         'fontSize': '18px',
         'width': "150%",
-        'marginLeft': '65px'  # 👈 Alineación izquierda ajustada
+        'marginLeft': '70px'  # 👈 Alineación izquierda ajustada
     }
     )
 
@@ -197,7 +198,7 @@ def update_graph(option_adm1, map_style):
     )
 
     fig_map.update_layout(
-    width=1700,
+#    width=1700,
     height=700,
     margin={"r": 0, "t": 0, "l": 0, "b": 0},
     legend=dict(
@@ -240,7 +241,7 @@ def update_graph(option_adm1, map_style):
         #title='Distribución porcentual por operador móvil disponible',
         title=dict(
         text='Percentage distribution by available mobile operator',
-        x=0.01,  # 👈 más cerca del borde izquierdo
+        x=0,  # 👈 más cerca del borde izquierdo
         font=dict(
             family='Quicksand, sans-serif',
             size=20,
@@ -248,8 +249,8 @@ def update_graph(option_adm1, map_style):
         )
         ),
         yaxis=dict(showticklabels=False),
-        height=200,
-        margin=dict(t=40, b=20, l=20, r=20),
+        height=160,
+        margin=dict(t=30, b=0, l=0, r=0),
         showlegend=False,
         paper_bgcolor='#f1f2f3',  # Fondo del canvas (todo el gráfico)
         plot_bgcolor='#f1f2f3'    # Fondo del área del gráfico en sí
