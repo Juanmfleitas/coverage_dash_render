@@ -249,7 +249,7 @@ def update_graph(option_adm1, map_style):
         )
         ),
         yaxis=dict(showticklabels=False),
-        height=160,
+        height=140,
         margin=dict(t=30, b=0, l=0, r=0),
         showlegend=False,
         paper_bgcolor='#f1f2f3',  # Fondo del canvas (todo el gráfico)
