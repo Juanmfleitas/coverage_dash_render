@@ -31,10 +31,10 @@ app.layout = html.Div([
     html.H1(
         "Tigo and Claro 4G Mobile Coverage Comparison - Guatemala. Period: Q1 2025",
         style={
-            'fontFamily': 'Quicksand, sans-serif',
+            'fontFamily': 'Poppins, sans-serif',
             'fontWeight': 'bold',  # 👈 negritas
             'color': '#0033A0',  # Azul corporativo Tigo
-            'marginLeft': '20px'
+            'marginLeft': '17px'
         }
     ),
 
